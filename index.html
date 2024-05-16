@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Example</title>
+</head>
+<body>
+    <h1>Fetch Example</h1>
+    <label for="emailInput">E-Mail-Adresse:</label>
+    <input type="email" id="emailInput" placeholder="Gib deine E-Mail-Adresse ein">
+    <button id="fetchButton">Fetch Data</button>
+
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', function() {
+            const email = document.getElementById('emailInput').value;
+            if (email) {
+                fetch("http://172.210.61.32:3000/proxy", {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email: email }),
+                    method: "POST"
+                })
+                .then(response => {
+                    console.log('Status:', response.status); // Ausgabe des Status
+                    return response.json().catch(() => ({})); // Umwandeln der Antwort in JSON, leeres Objekt bei Fehler
+                })
+                .then(data => {
+                    console.log('Data:', data); // Ausgabe der Daten
+                })
+                .catch(error => console.error('Error:', error));
+            } else {
+                console.error('Bitte gib eine gültige E-Mail-Adresse ein.');
+            }
+        });
+    </script>
+</body>
+</html>
